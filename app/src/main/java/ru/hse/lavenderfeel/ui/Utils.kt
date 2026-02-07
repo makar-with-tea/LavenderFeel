@@ -1,13 +1,11 @@
 package ru.hse.lavenderfeel.ui
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
 import androidx.compose.ui.graphics.Color
-import java.io.ByteArrayOutputStream
-import kotlin.io.readBytes
-import kotlin.io.use
+import java.time.LocalDate
+import java.time.Month
+import java.time.format.TextStyle
+import java.util.Locale
 
 fun Boolean?.orFalse(): Boolean = this ?: false
 
@@ -15,41 +13,49 @@ fun Int?.orZero(): Int = this ?: 0
 
 fun <T> T?.orDefault(default: T): T = this ?: default
 
-class BitmapHelper {
-    companion object {
-        fun bitmapToByteArray(bitmap: Bitmap?): ByteArray? {
-            val stream = ByteArrayOutputStream()
-            bitmap?.compress(Bitmap.CompressFormat.PNG, 100, stream) ?: return null
-            return stream.toByteArray()
-        }
-
-        fun byteArrayToBitmap(byteArray: ByteArray?): Bitmap? {
-            byteArray ?: return null
-            return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
-        }
-    }
-}
-
 fun rawResId(name: String, context: Context): Int {
     return context.resources.getIdentifier(name, "raw", context.packageName)
 }
 
-fun nameAndAgeString(name: String, age: Int): String = "$name, $age"
-
-fun getBytesFromUri(context: Context, uri: Uri): ByteArray? {
-    context.contentResolver.openInputStream(uri)?.use { inputStream ->
-        return inputStream.readBytes()
+fun Emotion.toColor(): Color {
+    return when (this) {
+        Emotion.ANGRY -> Color(0xFFF17070)
+        Emotion.SAD -> Color(0xFF5AADFF)
+        Emotion.NEUTRAL -> Color(0xFFB991FF)
+        Emotion.HAPPY -> Color(0xFFFFE376)
+        Emotion.NONE -> Color(0xFF757575).copy(alpha = 0.2f)
     }
-    return null
 }
 
-fun EmotionColor.toColor(): Color {
+fun DayColor.toColor(): Color {
     return when (this) {
-        EmotionColor.VERY_SAD -> Color(0xFFF17070)
-        EmotionColor.SAD -> Color(0xFF5AADFF)
-        EmotionColor.NEUTRAL -> Color(0xFFB991FF)
-        EmotionColor.HAPPY -> Color(0xFF8BFF90)
-        EmotionColor.VERY_HAPPY -> Color(0xFFFFE376)
-        EmotionColor.NONE -> Color(0xFF757575).copy(alpha = 0.2f)
+        DayColor.BLUE -> Color(0xFFAACFFF)
+        DayColor.GREEN -> Color(0xFFC3FFA2)
+        DayColor.LIGHT_BLUE -> Color(0xFFAAFFED)
+        DayColor.ORANGE -> Color(0xFFFFB871)
+        DayColor.PINK -> Color(0xFFF48EC1)
+        DayColor.PURPLE -> Color(0xFFB8B3FF)
+        DayColor.RED -> Color(0xFFFF8B78)
+        DayColor.YELLOW -> Color(0xFFFFE1A4)
     }
+}
+
+private fun Emotion.toAvatarResId(): Int {
+    return when (this) {
+        Emotion.SAD -> ru.hse.lavenderfeel.R.drawable.emotion_sad
+        Emotion.ANGRY -> ru.hse.lavenderfeel.R.drawable.emotion_angry
+        Emotion.NEUTRAL -> ru.hse.lavenderfeel.R.drawable.emotion_neutral
+        Emotion.HAPPY -> ru.hse.lavenderfeel.R.drawable.emotion_happy
+        else -> ru.hse.lavenderfeel.R.drawable.emotion_neutral
+    }
+}
+
+fun Month.getName() = this.getDisplayName(TextStyle.FULL_STANDALONE, Locale.getDefault())
+        .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+
+fun LocalDate.getDdMmYyyy(): String {
+    val day = this.dayOfMonth.toString().padStart(2, '0')
+    val month = this.monthValue.toString().padStart(2, '0')
+    val year = this.year.toString()
+    return "$day.$month.$year"
 }

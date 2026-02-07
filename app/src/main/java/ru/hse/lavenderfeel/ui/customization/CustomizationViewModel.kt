@@ -8,13 +8,14 @@ import ru.hse.lavenderfeel.R
 import ru.hse.lavenderfeel.ui.AvatarLayer
 import ru.hse.lavenderfeel.ui.CustomizationCategory
 
-class CustomizationViewModel : ViewModel() {
-    var name by mutableStateOf("Your Name")
-    var selectedCategory by mutableStateOf(CustomizationCategory.EYES)
-    var selectedLayers by mutableStateOf<Map<CustomizationCategory, AvatarLayer>>(emptyMap())
+class CustomizationViewModel(
+    initialName: String = "Незнакомец",
+    initialSelectedLayers: List<AvatarLayer> = emptyList()
+) : ViewModel() {
+    var name by mutableStateOf(initialName)
 
     val resourcesByCategory = mapOf(
-        CustomizationCategory.CLOTHES to listOf(
+        CustomizationCategory.CLOTHES to mutableListOf(
             AvatarLayer(resId = R.drawable.clothes_suit_big, description = "Костюм большой"),
             AvatarLayer(resId = R.drawable.clothes_suit_small, description = "Костюм маленький"),
             AvatarLayer(resId = R.drawable.clothes_tshirt_big, description = "Футболка большая"),
@@ -22,11 +23,11 @@ class CustomizationViewModel : ViewModel() {
             AvatarLayer(resId = R.drawable.clothes_sweater_big, description = "Свитер большой"),
             AvatarLayer(resId = R.drawable.clothes_sweater_small, description = "Свитер маленький"),
         ),
-        CustomizationCategory.EYES to listOf(
+        CustomizationCategory.EYES to mutableListOf(
             AvatarLayer(resId = R.drawable.eye_contact_base, description = "Обычные глаза"),
             AvatarLayer(resId = R.drawable.eye_contact_squint, description = "Прищуренные глаза"),
         ),
-        CustomizationCategory.ACCESSORIES to listOf(
+        CustomizationCategory.ACCESSORIES to mutableListOf(
             AvatarLayer(resId = R.drawable.accessory_beard, description = "Борода"),
             AvatarLayer(resId = R.drawable.accessory_eyebags, description = "Мешки под глазами"),
             AvatarLayer(resId = R.drawable.accessory_eyelashes, description = "Ресницы"),
@@ -40,7 +41,32 @@ class CustomizationViewModel : ViewModel() {
         )
     )
 
-    fun selectLayer(category: CustomizationCategory, layer: AvatarLayer) {
-        selectedLayers = selectedLayers.toMutableMap().apply { put(category, layer) }
+    var selectedLayers by mutableStateOf(
+        initialSelectedLayers
+            .filter { layer ->
+                resourcesByCategory.values.any { it.contains(layer) }
+            }
+            .toMutableList()
+    )
+
+    fun selectLayer(layer: AvatarLayer) {
+        if (selectedLayers.contains(layer)) {
+            selectedLayers.remove(layer)
+        } else {
+            when (layer) {
+                in resourcesByCategory[CustomizationCategory.CLOTHES] ?: emptyList() -> {
+                    selectedLayers.removeAll(resourcesByCategory[CustomizationCategory.CLOTHES] ?: emptyList())
+                }
+                in resourcesByCategory[CustomizationCategory.EYES] ?: emptyList() -> {
+                    selectedLayers.removeAll(resourcesByCategory[CustomizationCategory.EYES] ?: emptyList())
+                }
+            }
+            selectedLayers.add(layer)
+        }
+        // todo просто отправить в класс лизы
+    }
+
+    fun isLayerSelected(layer: AvatarLayer): Boolean {
+        return selectedLayers.contains(layer)
     }
 }

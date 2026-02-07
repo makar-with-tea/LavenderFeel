@@ -28,7 +28,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import ru.hse.lavenderfeel.ui.EmotionColor
+import ru.hse.lavenderfeel.ui.BottomBlockSubtitle
+import ru.hse.lavenderfeel.ui.BottomBlockTitle
+import ru.hse.lavenderfeel.ui.Emotion
 import ru.hse.lavenderfeel.ui.toColor
 import java.time.LocalDate
 
@@ -62,13 +64,7 @@ fun CalendarView(
                     tint = MaterialTheme.colorScheme.onSecondaryContainer
                 )
             }
-            Text(
-                text = viewModel.monthName,
-                style = MaterialTheme.typography.titleLarge.copy(
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                )
-            )
+            BottomBlockTitle(viewModel.monthName)
             IconButton(onClick = { viewModel.nextMonth() }) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowForward,
@@ -92,13 +88,7 @@ fun CalendarView(
                         ),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        text = dayName,
-                        style = MaterialTheme.typography.bodyLarge.copy(
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer
-                        )
-                    )
+                    BottomBlockSubtitle(dayName)
                 }
             }
         }
@@ -118,19 +108,19 @@ fun CalendarView(
                                     if (day.isToday) 2.dp else (-1).dp,
                                     if (day.isToday) MaterialTheme.colorScheme.primary else Color.Transparent
                                 ),
-                                when (day.color) {
-                                    EmotionColor.NONE -> RectangleShape
+                                when (day.emotion) {
+                                    Emotion.NONE -> RectangleShape
                                     else -> CircleShape
                                 }
                             )
                             .clip(
-                                when (day.color) {
-                                    EmotionColor.NONE -> RectangleShape
+                                when (day.emotion) {
+                                    Emotion.NONE -> RectangleShape
                                     else -> CircleShape
                                 }
                             )
                             .background(
-                                if (day.isCurrentMonth) day.color.toColor() else day.color.toColor().copy(alpha = 0.2f)
+                                if (day.isCurrentMonth) day.emotion.toColor() else day.emotion.toColor().copy(alpha = 0.2f)
                             )
                             .clickable(enabled = day.isCurrentMonth) { onDayClick(day.date) },
                         contentAlignment = Alignment.Center

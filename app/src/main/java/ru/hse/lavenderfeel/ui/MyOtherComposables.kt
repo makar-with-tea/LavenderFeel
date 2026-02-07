@@ -159,3 +159,25 @@ fun MyCheckBox(
         Text(label)
     }
 }
+
+@Composable
+fun BottomBlockTitle(text: String) {
+    Text(
+        text = text,
+        style = MaterialTheme.typography.titleLarge.copy(
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSecondaryContainer
+        )
+    )
+}
+
+@Composable
+fun BottomBlockSubtitle(text: String) {
+    Text(
+        text = text,
+        style = MaterialTheme.typography.bodyLarge.copy(
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSecondaryContainer
+        )
+    )
+}

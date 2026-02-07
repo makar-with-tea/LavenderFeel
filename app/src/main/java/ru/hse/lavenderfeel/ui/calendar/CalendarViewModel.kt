@@ -5,7 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import ru.hse.lavenderfeel.ui.CalendarDay
-import ru.hse.lavenderfeel.ui.EmotionColor
+import ru.hse.lavenderfeel.ui.Emotion
+import ru.hse.lavenderfeel.ui.getName
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
@@ -17,8 +18,7 @@ class CalendarViewModel : ViewModel() {
         private set
 
     val monthName: String
-        get() = currentMonth.month.getDisplayName(TextStyle.FULL_STANDALONE, Locale.getDefault())
-            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() } + " " + currentMonth.year
+        get() = currentMonth.month.getName() + " " + currentMonth.year
 
     val daysOfWeek: List<String> = DayOfWeek.entries
         .map { it.getDisplayName(TextStyle.SHORT, Locale.getDefault()) }
@@ -39,7 +39,7 @@ class CalendarViewModel : ViewModel() {
                         CalendarDay(
                             date = date,
                             isCurrentMonth = date.month == currentMonth.month,
-                            color = EmotionColor.entries[d % EmotionColor.entries.size],
+                            emotion = Emotion.entries[d % Emotion.entries.size],
                             isToday = date == LocalDate.now()
                         )
                     )

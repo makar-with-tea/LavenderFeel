@@ -9,12 +9,16 @@ data class AvatarLayer(
 data class CalendarDay(
     val date: LocalDate,
     val isCurrentMonth: Boolean,
-    val color: EmotionColor,
+    val emotion: Emotion,
     val isToday: Boolean = false,
 )
 
-enum class EmotionColor {
-    VERY_SAD, SAD, NEUTRAL, HAPPY, VERY_HAPPY, NONE
+enum class Emotion {
+    SAD, ANGRY, NEUTRAL, HAPPY, NONE
+}
+
+enum class DayColor {
+    BLUE, GREEN, LIGHT_BLUE, ORANGE, PINK, PURPLE, RED, YELLOW
 }
 
 enum class CustomizationCategory(val displayName: String) {
