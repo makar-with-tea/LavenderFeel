@@ -5,8 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import ru.hse.lavenderfeel.data.DataModule
+import ru.hse.lavenderfeel.domain.DailyEntry
 import ru.hse.lavenderfeel.domain.EmotionType
 import ru.hse.lavenderfeel.domain.FaceColor
+import ru.hse.lavenderfeel.domain.NegativeHabits
+import ru.hse.lavenderfeel.domain.PositiveHabits
 import ru.hse.lavenderfeel.ui.DayColor
 import ru.hse.lavenderfeel.ui.Emotion
 import java.time.LocalDate
@@ -82,6 +85,46 @@ class DayReportViewModel(
     }
 
     fun saveReport() {
-        // todo класс лизы
+        //todo да
+        val emotionType = when (mood) {
+            Emotion.SAD -> EmotionType.emotion_sad
+            Emotion.ANGRY -> EmotionType.emotion_angry
+            Emotion.HAPPY -> EmotionType.emotion_happy
+            Emotion.NEUTRAL -> EmotionType.emotion_neutral
+            else -> EmotionType.emotion_neutral
+        }
+
+        val faceColorEnum = when (dayColor) {
+            DayColor.RED -> FaceColor.RED
+            DayColor.ORANGE -> FaceColor.ORANGE
+            DayColor.YELLOW -> FaceColor.YELLOW
+            DayColor.GREEN -> FaceColor.GREEN
+            DayColor.LIGHT_BLUE -> FaceColor.LIGHTBLUE
+            DayColor.BLUE -> FaceColor.DARKBLUE
+            DayColor.PURPLE -> FaceColor.PURPLE
+            DayColor.PINK -> FaceColor.PINK
+        }
+
+        val positiveHabits = PositiveHabits(
+            food = positiveChecks["ateWell"] ?: false,
+            water = positiveChecks["drankWater"] ?: false,
+            sleep = positiveChecks["sleptWell"] ?: false
+        )
+
+        val negativeHabits = NegativeHabits(
+            smoke = negativeChecks["smoked"] ?: false,
+            alcohol = negativeChecks["drankAlcohol"] ?: false,
+            selfharm = negativeChecks["selfHarmed"] ?: false
+        )
+
+        DataModule.dailyEntryService.saveDailyEntry(
+            date = date,
+            note = description,
+            emotion = emotionType,
+            faceColor = faceColorEnum,
+            positive = positiveHabits,
+            negative = negativeHabits
+        )
+
     }
 }

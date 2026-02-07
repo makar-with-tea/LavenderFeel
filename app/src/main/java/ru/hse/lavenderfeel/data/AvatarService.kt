@@ -1,5 +1,6 @@
 package ru.hse.lavenderfeel.data
 
+import android.util.Log
 import ru.hse.lavenderfeel.R
 import ru.hse.lavenderfeel.domain.AccessoryType
 import ru.hse.lavenderfeel.domain.Avatar
@@ -110,6 +111,7 @@ class AvatarService(
             accessory_tear = accessory_tear
         )
         avatarRepository.saveAvatar(updated)
+        Log.d("Avatar", clothes.toString())
         return updated
     }
 }
