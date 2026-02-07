@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import ru.hse.lavenderfeel.R
+import ru.hse.lavenderfeel.data.DataModule
 import ru.hse.lavenderfeel.ui.AvatarLayer
 import ru.hse.lavenderfeel.ui.CustomizationCategory
 
@@ -51,7 +52,8 @@ class CustomizationViewModel(
 
     fun saveName(newName: String) {
         name = newName
-        // todo просто отправить в класс лизы
+        DataModule.avatarService.updateName(name)
+        // todo да
     }
 
     fun selectLayer(layer: AvatarLayer) {
@@ -68,7 +70,8 @@ class CustomizationViewModel(
             }
             selectedLayers = selectedLayers.toMutableList().also { it.add(layer) }
         }
-        // todo просто отправить в класс лизы
+        // todo да
+        DataModule.avatarService.buildAvatar(selectedLayers)
     }
 
     fun isLayerSelected(layer: AvatarLayer): Boolean {

@@ -5,9 +5,13 @@ import ru.hse.lavenderfeel.domain.Avatar
 class AvatarRepository {
 
     fun getAvatar(): Avatar? =
-        InMemoryStorage.avatar
+        SharedPreferencesStorage.getAvatar()
 
     fun saveAvatar(avatar: Avatar) {
-        InMemoryStorage.saveAvatar(avatar)
+        SharedPreferencesStorage.saveAvatar(avatar)
+    }
+
+    fun setName(name: String){
+        SharedPreferencesStorage.updateAvatarName(name)
     }
 }

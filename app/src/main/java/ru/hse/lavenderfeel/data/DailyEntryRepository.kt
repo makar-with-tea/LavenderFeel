@@ -6,12 +6,12 @@ import java.time.LocalDate
 class DailyEntryRepository {
 
     fun getByDate(date: LocalDate): DailyEntry? =
-        InMemoryStorage.getDailyEntry(date)
+        SharedPreferencesStorage.getDailyEntry(date)
 
     fun save(entry: DailyEntry) {
-        InMemoryStorage.saveDailyEntry(entry)
+        SharedPreferencesStorage.saveDailyEntry(entry)
     }
 
     fun getAll(): List<DailyEntry> =
-        InMemoryStorage.getAllDailyEntries()
+        SharedPreferencesStorage.getAllDailyEntries()
 }
