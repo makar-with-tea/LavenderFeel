@@ -1,32 +1,24 @@
-package ru.hse.lavenderfeel.ui.main
+package ru.hse.lavenderfeel.ui.calendar
 
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.text.capitalize
 import androidx.lifecycle.ViewModel
-import ru.hse.lavenderfeel.R
+import ru.hse.lavenderfeel.ui.CalendarDay
+import ru.hse.lavenderfeel.ui.EmotionColor
 import java.time.DayOfWeek
+import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.TextStyle
 import java.util.Locale
-import java.util.Locale.getDefault
 
-class MainViewModel : ViewModel() {
-    val avatarLayers = mutableStateListOf(
-        AvatarLayer(resId = R.drawable.suit_big),
-        AvatarLayer(resId = R.drawable.face_red),
-        AvatarLayer(resId = R.drawable.eye_contact_base),
-        AvatarLayer(resId = R.drawable.emotion_smile),
-    )
-
+class CalendarViewModel : ViewModel() {
     var currentMonth: YearMonth by mutableStateOf(YearMonth.now())
         private set
 
     val monthName: String
-        get() = currentMonth.month.getDisplayName(TextStyle.FULL_STANDALONE, getDefault())
-            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(getDefault()) else it.toString() } + " " + currentMonth.year
+        get() = currentMonth.month.getDisplayName(TextStyle.FULL_STANDALONE, Locale.getDefault())
+            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() } + " " + currentMonth.year
 
     val daysOfWeek: List<String> = DayOfWeek.entries
         .map { it.getDisplayName(TextStyle.SHORT, Locale.getDefault()) }
@@ -48,6 +40,7 @@ class MainViewModel : ViewModel() {
                             date = date,
                             isCurrentMonth = date.month == currentMonth.month,
                             color = EmotionColor.entries[d % EmotionColor.entries.size],
+                            isToday = date == LocalDate.now()
                         )
                     )
                 }
@@ -63,4 +56,3 @@ class MainViewModel : ViewModel() {
         currentMonth = currentMonth.plusMonths(1)
     }
 }
-

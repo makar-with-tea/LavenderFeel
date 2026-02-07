@@ -4,15 +4,10 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import ru.hse.lavenderfeel.ui.main.EmotionColor
 import java.io.ByteArrayOutputStream
-import java.time.LocalDateTime
-import java.time.ZoneOffset
 import kotlin.io.readBytes
 import kotlin.io.use
-import kotlin.text.format
 
 fun Boolean?.orFalse(): Boolean = this ?: false
 
