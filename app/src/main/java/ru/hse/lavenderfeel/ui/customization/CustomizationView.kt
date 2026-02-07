@@ -30,6 +30,7 @@ fun CustomizationView(
     viewModel: CustomizationViewModel,
     modifier: Modifier = Modifier,
 ) {
+    viewModel.init()
     Column(
         modifier = modifier
             .fillMaxWidth()

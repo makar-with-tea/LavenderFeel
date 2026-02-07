@@ -30,7 +30,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import ru.hse.lavenderfeel.ui.BottomBlockSubtitle
 import ru.hse.lavenderfeel.ui.BottomBlockTitle
-import ru.hse.lavenderfeel.ui.Emotion
 import ru.hse.lavenderfeel.ui.LoadingScreen
 import ru.hse.lavenderfeel.ui.toColor
 import java.time.LocalDate
@@ -41,6 +40,7 @@ fun CalendarView(
     onDayClick: (LocalDate) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    viewModel.init()
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -114,13 +114,13 @@ fun CalendarView(
                                     if (day.isToday) MaterialTheme.colorScheme.primary else Color.Transparent
                                 ),
                                 when (day.emotion) {
-                                    Emotion.NONE -> RectangleShape
+                                    null -> RectangleShape
                                     else -> CircleShape
                                 }
                             )
                             .clip(
                                 when (day.emotion) {
-                                    Emotion.NONE -> RectangleShape
+                                    null -> RectangleShape
                                     else -> CircleShape
                                 }
                             )

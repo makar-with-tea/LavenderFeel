@@ -8,6 +8,7 @@ import ru.hse.lavenderfeel.R
 import ru.hse.lavenderfeel.data.DataModule
 import ru.hse.lavenderfeel.ui.AvatarLayer
 import ru.hse.lavenderfeel.ui.CustomizationCategory
+import java.time.LocalDate
 
 class CustomizationViewModel(
     initialName: String = "Незнакомец",
@@ -50,10 +51,13 @@ class CustomizationViewModel(
             .toMutableList()
     )
 
+    fun init() {
+        DataModule.dailyEntryService.getEntryForDate(LocalDate.now())
+    }
+
     fun saveName(newName: String) {
         name = newName
         DataModule.avatarService.updateName(name)
-        // todo да
     }
 
     fun selectLayer(layer: AvatarLayer) {
@@ -70,7 +74,6 @@ class CustomizationViewModel(
             }
             selectedLayers = selectedLayers.toMutableList().also { it.add(layer) }
         }
-        // todo да
         DataModule.avatarService.buildAvatar(selectedLayers)
     }
 

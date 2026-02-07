@@ -1,6 +1,7 @@
 package ru.hse.lavenderfeel.data
 
 import android.util.Log
+import kotlinx.coroutines.flow.MutableStateFlow
 import ru.hse.lavenderfeel.R
 import ru.hse.lavenderfeel.domain.AccessoryType
 import ru.hse.lavenderfeel.domain.Avatar
@@ -11,6 +12,8 @@ import ru.hse.lavenderfeel.ui.CustomizationCategory
 class AvatarService(
     private val avatarRepository: AvatarRepository
 ) {
+    private val _currentAvatar: MutableStateFlow<Avatar> = MutableStateFlow(avatarRepository.getAvatar() ?: Avatar.default())
+    val currentAvatar: MutableStateFlow<Avatar> = _currentAvatar
 
     fun getAvatar(): Avatar =
         avatarRepository.getAvatar() ?: Avatar.default()
@@ -48,10 +51,12 @@ class AvatarService(
             accessory_tear = accessory_tear
         )
         avatarRepository.saveAvatar(updated)
+        _currentAvatar.value = updated
         return updated
     }
     fun updateName(name: String){
         avatarRepository.setName(name)
+        _currentAvatar.value = avatarRepository.getAvatar() ?: Avatar.default()
     }
 
     fun buildAvatar(layers: List<AvatarLayer>): Avatar {
@@ -111,6 +116,7 @@ class AvatarService(
             accessory_tear = accessory_tear
         )
         avatarRepository.saveAvatar(updated)
+        _currentAvatar.value = updated
         Log.d("Avatar", clothes.toString())
         return updated
     }

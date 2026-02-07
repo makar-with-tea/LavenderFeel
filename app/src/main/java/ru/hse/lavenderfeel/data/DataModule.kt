@@ -7,5 +7,5 @@ object DataModule {
 
     val avatarService = AvatarService(avatarRepository)
     val dailyEntryService = DailyEntryService(dailyEntryRepository)
-    val avatarRenderService = AvatarRenderService(avatarRepository, dailyEntryRepository)
+    val avatarRenderService = AvatarRenderService(avatarService, dailyEntryService)
 }

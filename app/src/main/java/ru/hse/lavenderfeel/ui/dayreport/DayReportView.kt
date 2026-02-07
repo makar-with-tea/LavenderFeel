@@ -18,15 +18,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import ru.hse.lavenderfeel.domain.Emotion
+import ru.hse.lavenderfeel.domain.FaceColor
 import ru.hse.lavenderfeel.ui.BottomBlockSubtitle
 import ru.hse.lavenderfeel.ui.BottomBlockTitle
-import ru.hse.lavenderfeel.ui.DayColor
-import ru.hse.lavenderfeel.ui.Emotion
 import ru.hse.lavenderfeel.ui.LoadingScreen
-import ru.hse.lavenderfeel.ui.MyTextField
 import ru.hse.lavenderfeel.ui.MyCheckBox
 import ru.hse.lavenderfeel.ui.getDdMmYyyy
-import ru.hse.lavenderfeel.ui.getName
 import ru.hse.lavenderfeel.ui.toColor
 
 @Composable
@@ -47,7 +45,6 @@ fun DayReportView(
         verticalArrangement = Arrangement.Top
     ) {
         if (viewModel.isLoading) {
-            viewModel.loadData()
             LoadingScreen()
             return
         }
@@ -100,7 +97,7 @@ fun DayReportView(
         ) {
             BottomBlockSubtitle("Как ты себя чувствуешь?")
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                Emotion.entries.filter { it != Emotion.NONE }.forEach { mood ->
+                Emotion.entries.forEach { mood ->
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
@@ -127,7 +124,6 @@ fun DayReportView(
                                 Emotion.ANGRY -> Icons.Filled.SentimentVeryDissatisfied
                                 Emotion.NEUTRAL -> Icons.Filled.SentimentNeutral
                                 Emotion.HAPPY -> Icons.Filled.SentimentVerySatisfied
-                                else -> Icons.Filled.SentimentNeutral
                             }
                             Icon(icon, contentDescription = mood.name)
                         }
@@ -136,7 +132,6 @@ fun DayReportView(
                             Emotion.ANGRY -> "Агрессивно"
                             Emotion.NEUTRAL -> "Нейтрально"
                             Emotion.HAPPY -> "Счастливо"
-                            else -> ""
                         }
                         Text(moodName)
                     }
@@ -147,7 +142,7 @@ fun DayReportView(
 
             BottomBlockSubtitle("Какого цвета был день?")
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                DayColor.entries.forEach { color ->
+                FaceColor.entries.forEach { color ->
                     Box(
                         modifier = Modifier
                             .size(32.dp)

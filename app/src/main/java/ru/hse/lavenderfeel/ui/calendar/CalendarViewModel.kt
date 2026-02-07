@@ -7,10 +7,10 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import ru.hse.lavenderfeel.data.DataModule
 import ru.hse.lavenderfeel.ui.CalendarDay
-import ru.hse.lavenderfeel.ui.Emotion
 import ru.hse.lavenderfeel.ui.getName
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -39,9 +39,7 @@ class CalendarViewModel : ViewModel() {
 
     fun loadMonthData() {
         isLoading = true
-        // todo класс Лизы, загрузить для currentMonth инфу
         viewModelScope.launch(Dispatchers.IO) {
-            delay(1000)
             val firstDayOfMonth = currentMonth.atDay(1)
             val lastDayOfMonth = currentMonth.atEndOfMonth()
             val firstDayOfWeek = firstDayOfMonth.dayOfWeek.value % 7
@@ -49,6 +47,9 @@ class CalendarViewModel : ViewModel() {
             val weeks = (totalDays + 6) / 7
             val dayList = mutableListOf<CalendarDay>()
             var dayCounter = 1 - firstDayOfWeek
+            val daysEmotions = DataModule.dailyEntryService.getHistory()
+                .associateBy { it.date }
+            Log.i("marathinks", "${currentMonth.month}: ${daysEmotions}")
             for (w in 0 until weeks) {
                 for (d in 0..6) {
                     val date = currentMonth.atDay(1).plusDays((dayCounter++).toLong())
@@ -56,14 +57,16 @@ class CalendarViewModel : ViewModel() {
                         CalendarDay(
                             date = date,
                             isCurrentMonth = date.month == currentMonth.month,
-                            emotion = Emotion.entries[d % Emotion.entries.size],
+                            emotion = daysEmotions[date]?.emotion,
                             isToday = date == LocalDate.now()
                         )
                     )
                 }
             }
-            days = dayList
-            isLoading = false
+            withContext(Dispatchers.Main) {
+                days = dayList
+                isLoading = false
+            }
         }
     }
 
@@ -75,5 +78,9 @@ class CalendarViewModel : ViewModel() {
     fun nextMonth() {
         currentMonth = currentMonth.plusMonths(1)
         loadMonthData()
+    }
+
+    fun init() {
+        DataModule.dailyEntryService.getEntryForDate(LocalDate.now())
     }
 }
