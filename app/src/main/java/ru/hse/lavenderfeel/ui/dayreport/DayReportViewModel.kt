@@ -4,6 +4,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import ru.hse.lavenderfeel.ui.DayColor
 import ru.hse.lavenderfeel.ui.Emotion
 import java.time.LocalDate
@@ -32,7 +36,10 @@ class DayReportViewModel(
 
     fun loadData() {
         // todo класс лизы
-        isLoading = false
+        viewModelScope.launch(Dispatchers.IO) {
+            delay(1000)
+            isLoading = false
+        }
     }
 
     fun setPositiveCheck(key: String, value: Boolean) {

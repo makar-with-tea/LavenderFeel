@@ -25,6 +25,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -96,6 +97,13 @@ fun AppScreen(
         handleBack()
     }
 
+    val avatarLayers by avatarViewModel.avatarLayers.collectAsState()
+    if (avatarLayers.isEmpty()) {
+        avatarViewModel.loadInitialLayers()
+        LoadingScreen()
+        return
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -126,7 +134,7 @@ fun AppScreen(
                 contentAlignment = Alignment.Center
             ) {
                 AvatarView(
-                    layers = avatarViewModel.avatarLayers,
+                    layers = avatarLayers,
                     modifier = Modifier
                         .fillMaxSize()
                 )
@@ -165,10 +173,9 @@ fun AppScreen(
                 )
                 Screen.Customization -> CustomizationView(
                     viewModel = CustomizationViewModel(
-                        initialSelectedLayers = avatarViewModel.avatarLayers,
+                        initialSelectedLayers = avatarLayers,
                     ),
                     modifier = Modifier.weight(1f),
-                    onLayerClicked = { avatarViewModel.addOrDeleteLayer( it) }
                 )
                 Screen.DayReport -> if (chosenDay != null) {
                     DayReportView(

@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import ru.hse.lavenderfeel.ui.BottomBlockSubtitle
 import ru.hse.lavenderfeel.ui.BottomBlockTitle
 import ru.hse.lavenderfeel.ui.Emotion
+import ru.hse.lavenderfeel.ui.LoadingScreen
 import ru.hse.lavenderfeel.ui.toColor
 import java.time.LocalDate
 
@@ -50,6 +51,10 @@ fun CalendarView(
                 RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp)
             ),
     ) {
+        if (viewModel.isLoading) {
+            LoadingScreen()
+            return
+        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()

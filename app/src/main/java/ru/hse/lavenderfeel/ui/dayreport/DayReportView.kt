@@ -22,6 +22,7 @@ import ru.hse.lavenderfeel.ui.BottomBlockSubtitle
 import ru.hse.lavenderfeel.ui.BottomBlockTitle
 import ru.hse.lavenderfeel.ui.DayColor
 import ru.hse.lavenderfeel.ui.Emotion
+import ru.hse.lavenderfeel.ui.LoadingScreen
 import ru.hse.lavenderfeel.ui.MyTextField
 import ru.hse.lavenderfeel.ui.MyCheckBox
 import ru.hse.lavenderfeel.ui.getDdMmYyyy
@@ -45,6 +46,11 @@ fun DayReportView(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top
     ) {
+        if (viewModel.isLoading) {
+            viewModel.loadData()
+            LoadingScreen()
+            return
+        }
         val dateString = viewModel.date.getDdMmYyyy()
         Column(
             modifier = Modifier
@@ -107,6 +113,14 @@ fun DayReportView(
                                     else MaterialTheme.colorScheme.surface,
                                     RoundedCornerShape(8.dp)
                                 )
+                                .border(
+                                    BorderStroke(
+                                        2.dp,
+                                        if (viewModel.mood == mood) MaterialTheme.colorScheme.onPrimaryContainer
+                                        else Color.Transparent
+                                    ),
+                                    RoundedCornerShape(8.dp)
+                                )
                         ) {
                             val icon = when (mood) {
                                 Emotion.SAD -> Icons.Filled.SentimentDissatisfied
@@ -155,6 +169,8 @@ fun DayReportView(
                 }
             }
 
+            Spacer(Modifier.height(8.dp))
+
             Box {
                 TextField(
                     modifier = Modifier
@@ -171,6 +187,8 @@ fun DayReportView(
                     )
                 )
             }
+
+            Spacer(Modifier.height(8.dp))
 
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Column(

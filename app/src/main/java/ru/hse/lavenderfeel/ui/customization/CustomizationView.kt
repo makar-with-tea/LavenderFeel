@@ -23,14 +23,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import ru.hse.lavenderfeel.ui.AvatarLayer
 import ru.hse.lavenderfeel.ui.CustomizationCategory
 
 @Composable
 fun CustomizationView(
     viewModel: CustomizationViewModel,
     modifier: Modifier = Modifier,
-    onLayerClicked: (AvatarLayer) -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -52,7 +50,7 @@ fun CustomizationView(
                 value = viewModel.name,
                 label = { Text("имя") },
                 maxLines = 1,
-                onValueChange = { viewModel.name = it },
+                onValueChange = { viewModel.saveName(it) },
                 colors = TextFieldDefaults.colors().copy(
                     focusedTextColor = MaterialTheme.colorScheme.onTertiaryContainer,
                     unfocusedTextColor = MaterialTheme.colorScheme.onSecondaryContainer,
@@ -96,7 +94,7 @@ fun CustomizationView(
         Spacer(Modifier.height(16.dp))
         val layers = viewModel.resourcesByCategory[selectedCategory] ?: emptyList()
         LazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = 64.dp),
+            columns = GridCells.Adaptive(minSize = 96.dp),
             modifier = Modifier
                 .fillMaxWidth()
         ) {
@@ -105,7 +103,6 @@ fun CustomizationView(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
                         .padding(8.dp)
-                        .size(64.dp)
                         .background(MaterialTheme.colorScheme.tertiaryContainer)
                         .border(
                             if (viewModel.isLayerSelected(layer))
@@ -114,7 +111,6 @@ fun CustomizationView(
                         )
                         .clickable {
                             viewModel.selectLayer(layer)
-                            onLayerClicked(layer)
                         }
                 ) {
                     Image(

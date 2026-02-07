@@ -49,9 +49,14 @@ class CustomizationViewModel(
             .toMutableList()
     )
 
+    fun saveName(newName: String) {
+        name = newName
+        // todo просто отправить в класс лизы
+    }
+
     fun selectLayer(layer: AvatarLayer) {
         if (selectedLayers.contains(layer)) {
-            selectedLayers.remove(layer)
+            selectedLayers = selectedLayers.toMutableList().also { it.remove(layer) }
         } else {
             when (layer) {
                 in resourcesByCategory[CustomizationCategory.CLOTHES] ?: emptyList() -> {
@@ -61,7 +66,7 @@ class CustomizationViewModel(
                     selectedLayers.removeAll(resourcesByCategory[CustomizationCategory.EYES] ?: emptyList())
                 }
             }
-            selectedLayers.add(layer)
+            selectedLayers = selectedLayers.toMutableList().also { it.add(layer) }
         }
         // todo просто отправить в класс лизы
     }
