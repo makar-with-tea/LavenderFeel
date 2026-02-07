@@ -9,7 +9,7 @@ data class Avatar(
 ) {
     companion object {
         fun default() = Avatar(
-            clothes = ClothesType.CASUAL1,
+            clothes = ClothesType.clothes_tshirt_big,
             accessory = AccessoryType.NONE,
             eyecontact = true,
             isnarrowed = false
