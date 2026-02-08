@@ -5,7 +5,7 @@ import java.time.LocalDate
 
 class DailyEntryRepository {
 
-    fun getByDate(date: LocalDate): DailyEntry? =
+    fun getByDate(date: String): DailyEntry? =
         SharedPreferencesStorage.getDailyEntry(date)
 
     fun save(entry: DailyEntry) {

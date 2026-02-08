@@ -57,7 +57,7 @@ class CalendarViewModel : ViewModel() {
                         CalendarDay(
                             date = date,
                             isCurrentMonth = date.month == currentMonth.month,
-                            emotion = daysEmotions[date]?.emotion,
+                            emotion = daysEmotions[date.toString()]?.emotion,
                             isToday = date == LocalDate.now()
                         )
                     )
@@ -81,6 +81,6 @@ class CalendarViewModel : ViewModel() {
     }
 
     fun init() {
-        DataModule.dailyEntryService.getEntryForDate(LocalDate.now())
+        DataModule.dailyEntryService.getEntryForDate(LocalDate.now().toString())
     }
 }

@@ -27,7 +27,14 @@ class AvatarRenderService(
         layers.add(clothesLayer(avatar.clothes))
         layers.add(faceColorLayer(entry?.faceColor ?: FaceColor.PURPLE))
         layers.add(emotionLayer(entry?.emotion ?: Emotion.NEUTRAL))
-
+        if (avatar.accessory_eyebags) {
+            layers.add(
+                AvatarLayer(
+                    resId = R.drawable.accessory_eyebags,
+                    description = "Мешки под глазами"
+                )
+            )
+        }
         if (avatar.isnarrowed) {
             layers.add(
                 AvatarLayer(
@@ -50,14 +57,7 @@ class AvatarRenderService(
         if (avatar.accessory_beard) {
             layers.add(AvatarLayer(resId = R.drawable.accessory_beard, description = "Борода"))
         }
-        if (avatar.accessory_eyebags) {
-            layers.add(
-                AvatarLayer(
-                    resId = R.drawable.accessory_eyebags,
-                    description = "Мешки под глазами"
-                )
-            )
-        }
+
         if (avatar.accessory_eyelashes) {
             layers.add(AvatarLayer(resId = R.drawable.accessory_eyelashes, description = "Ресницы"))
         }
@@ -78,6 +78,24 @@ class AvatarRenderService(
         }
         if (avatar.accessory_tear) {
             layers.add(AvatarLayer(resId = R.drawable.accessory_tear, description = "Слеза"))
+        }
+        if (entry?.negativeHabits?.selfharm ?: false){
+            layers.add(AvatarLayer(resId = R.drawable.day_selfharm, description = "Селфхарм"))
+        }
+        if (!(entry?.positiveHabits?.food ?: true)){
+            layers.add(AvatarLayer(resId = R.drawable.day_hunger, description = "Голод"))
+        }
+        if (!(entry?.positiveHabits?.water ?: true)){
+            layers.add(AvatarLayer(resId = R.drawable.day_thirst, description = "Жажда"))
+        }
+        if (!(entry?.positiveHabits?.sleep ?: true)){
+            layers.add(AvatarLayer(resId = R.drawable.day_insomnia, description = "Сон"))
+        }
+        if (entry?.negativeHabits?.alcohol ?: false){
+            layers.add(AvatarLayer(resId = R.drawable.day_puke, description = "Алкоголь"))
+        }
+        if (entry?.negativeHabits?.smoke ?: false){
+            layers.add(AvatarLayer(resId = R.drawable.day_smoke, description = "Курение"))
         }
 
         return layers

@@ -1,5 +1,6 @@
 package ru.hse.lavenderfeel.ui.customization
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -51,7 +52,7 @@ fun CustomizationView(
                 value = viewModel.name,
                 label = { Text("имя") },
                 maxLines = 1,
-                onValueChange = { viewModel.saveName(it) },
+                onValueChange = { viewModel.saveName(it)},
                 colors = TextFieldDefaults.colors().copy(
                     focusedTextColor = MaterialTheme.colorScheme.onTertiaryContainer,
                     unfocusedTextColor = MaterialTheme.colorScheme.onSecondaryContainer,

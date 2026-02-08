@@ -35,7 +35,7 @@ class DayReportViewModel(
     )
 
     init {
-        val dailyEntity = DataModule.dailyEntryService.getEntryForDate(date)
+        val dailyEntity = DataModule.dailyEntryService.getEntryForDate(date.toString())
         Log.i("marathinks", "Loaded daily entry for $date: $dailyEntity")
         mood = dailyEntity?.emotion ?: Emotion.NEUTRAL
 
@@ -82,7 +82,7 @@ class DayReportViewModel(
         )
 
         DataModule.dailyEntryService.saveDailyEntry(
-            date = date,
+            date = date.toString(),
             note = description,
             emotion = emotionType,
             faceColor = faceColorEnum,

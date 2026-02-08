@@ -60,6 +60,7 @@ class AvatarService(
     }
 
     fun buildAvatar(layers: List<AvatarLayer>): Avatar {
+        Log.d("buildAvatar", getAvatar().name)
         var clothes = ClothesType.clothes_tshirt_big
         var eyecontact = true
         var isnarrowed = false
@@ -117,7 +118,6 @@ class AvatarService(
         )
         avatarRepository.saveAvatar(updated)
         _currentAvatar.value = updated
-        Log.d("Avatar", clothes.toString())
         return updated
     }
 }

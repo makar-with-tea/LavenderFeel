@@ -3,6 +3,7 @@ package ru.hse.lavenderfeel.data
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -25,10 +26,12 @@ object SharedPreferencesStorage {
     fun saveAvatar(avatar: Avatar) {
         val json = gson.toJson(avatar)
         prefs.edit { putString(KEY_AVATAR, json) }
+        Log.d("saveAvatar", getAvatar()?.name ?: "no avatar...")
     }
 
     fun getAvatar(): Avatar? {
         val json = prefs.getString(KEY_AVATAR, null) ?: return null
+        Log.d("Avatar", json)
         return gson.fromJson(json, Avatar::class.java)
     }
 
@@ -38,12 +41,14 @@ object SharedPreferencesStorage {
         saveDailyEntriesMap(map)
     }
 
-    fun getDailyEntry(date: LocalDate): DailyEntry? {
-        return getDailyEntriesMap()[date.toString()]
+    fun getDailyEntry(date: String): DailyEntry? {
+        return getDailyEntriesMap()[date]
     }
 
-    fun getAllDailyEntries(): List<DailyEntry> =
-        getDailyEntriesMap().values.sortedByDescending { it.date }
+    fun getAllDailyEntries(): List<DailyEntry> {
+        return getDailyEntriesMap().values.sortedByDescending { LocalDate.parse(it.date) }
+    }
+
 
     private fun getDailyEntriesMap(): Map<String, DailyEntry> {
         val json = prefs.getString(KEY_DAILY_ENTRIES, null) ?: return emptyMap()
@@ -58,7 +63,7 @@ object SharedPreferencesStorage {
 
     fun updateAvatarName(name: String) {
         val avatar = getAvatar()
-        saveAvatar(avatar!!.copy(name = name))
-
+        saveAvatar(avatar?.copy(name = name) ?: Avatar.default())
+        Log.d("updateAvatarName", avatar?.name ?: "no avatar...")
     }
 }

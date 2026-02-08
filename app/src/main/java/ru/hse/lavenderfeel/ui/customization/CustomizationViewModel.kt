@@ -1,5 +1,6 @@
 package ru.hse.lavenderfeel.ui.customization
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -52,7 +53,7 @@ class CustomizationViewModel(
     )
 
     fun init() {
-        DataModule.dailyEntryService.getEntryForDate(LocalDate.now())
+        DataModule.dailyEntryService.getEntryForDate(LocalDate.now().toString())
     }
 
     fun saveName(newName: String) {

@@ -15,7 +15,7 @@ class DailyEntryService(
     private val _currentEntry: MutableStateFlow<DailyEntry?> = MutableStateFlow(null)
     val currentEntry: MutableStateFlow<DailyEntry?> = _currentEntry
     fun saveDailyEntry(
-        date: LocalDate,
+        date: String,
         note: String,
         emotion: Emotion,
         faceColor: FaceColor,
@@ -37,7 +37,7 @@ class DailyEntryService(
         return entry
     }
 
-    fun getEntryForDate(date: LocalDate): DailyEntry? {
+    fun getEntryForDate(date: String): DailyEntry? {
         return dailyEntryRepository.getByDate(date).also {
             _currentEntry.value = it
         }

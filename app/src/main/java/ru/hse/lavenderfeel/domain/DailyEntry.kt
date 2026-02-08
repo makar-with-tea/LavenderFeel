@@ -3,7 +3,7 @@ package ru.hse.lavenderfeel.domain
 import java.time.LocalDate
 
 data class DailyEntry(
-    val date: LocalDate,
+    val date: String,
     val note: String = "",
     val emotion: Emotion = Emotion.NEUTRAL,
     val faceColor: FaceColor = FaceColor.PURPLE,
